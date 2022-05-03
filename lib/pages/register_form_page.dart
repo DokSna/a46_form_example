@@ -14,6 +14,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   bool _hidePass = true;
 
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -55,6 +56,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Register Form'),
         centerTitle: true,
@@ -244,7 +246,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
       debugPrint('country: $_selectedCountry');
       debugPrint('live story: ${_liveStoryController.text}');
     } else {
-      debugPrint('Form is not valid! Please review and correct');
+      _showMessage(message: 'Form is not valid! Please review and correct');
     }
   }
 
@@ -283,5 +285,22 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     } else {
       return null;
     }
+  }
+
+  void _showMessage({required String message}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        backgroundColor: Colors.red,
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 18.0,
+          ),
+        ),
+      ),
+    );
   }
 }
