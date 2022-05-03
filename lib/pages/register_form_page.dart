@@ -22,6 +22,11 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _passController = TextEditingController();
   final _confirmPassController = TextEditingController();
 
+  // final List<String> _countries = ['Russia', 'Ukraine', 'Germany', 'France'];
+  // String _selectedCountry = '';
+  final List<String> _countries = ['Russia', 'Ukraine', 'Germany', 'France'];
+  String? _selectedCountry;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -112,6 +117,29 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               keyboardType: TextInputType.emailAddress,
               validator: _validateEmail,
             ),
+            SizedBox(height: 10),
+            DropdownButtonFormField(
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.map),
+                  labelText: 'Country?'),
+              items: _countries.map((country) {
+                return DropdownMenuItem(
+                  child: Text(country),
+                  value: country,
+                );
+              }).toList(),
+              onChanged: (country) {
+                debugPrint(country.toString());
+                setState(() {
+                  _selectedCountry = country as String;
+                });
+              },
+              value: _selectedCountry,
+              // validator: (val) {
+              //   return val == null ? 'Please select a country' : null;
+              // },
+            ),
             SizedBox(height: 20),
             TextFormField(
               controller: _liveStoryController,
@@ -186,13 +214,14 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      print('Form is valid');
-      print('name: ${_nameController.text}');
-      print('phone: ${_phoneController.text}');
-      print('email: ${_emailController.text}');
-      print('live story: ${_liveStoryController.text}');
+      debugPrint('Form is valid');
+      debugPrint('name: ${_nameController.text}');
+      debugPrint('phone: ${_phoneController.text}');
+      debugPrint('email: ${_emailController.text}');
+      debugPrint('country: $_selectedCountry');
+      debugPrint('live story: ${_liveStoryController.text}');
     } else {
-      print('Form is not valid! Please review and correct');
+      debugPrint('Form is not valid! Please review and correct');
     }
   }
 
