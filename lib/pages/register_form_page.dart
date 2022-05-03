@@ -239,7 +239,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
-      debugPrint('Form is valid');
+      _showDialog(name: _nameController.text);
       debugPrint('name: ${_nameController.text}');
       debugPrint('phone: ${_phoneController.text}');
       debugPrint('email: ${_emailController.text}');
@@ -301,6 +301,43 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog({required String name}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Registration successful',
+            style: TextStyle(
+              color: Colors.green,
+            ),
+          ),
+          content: Text(
+            '$name is now a verified register form',
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18.0,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Verified',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
