@@ -22,10 +22,12 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _passController = TextEditingController();
   final _confirmPassController = TextEditingController();
 
-  // final List<String> _countries = ['Russia', 'Ukraine', 'Germany', 'France'];
-  // String _selectedCountry = '';
   final List<String> _countries = ['Russia', 'Ukraine', 'Germany', 'France'];
   String? _selectedCountry;
+
+  final _nameFocus = FocusNode();
+  final _phoneFocus = FocusNode();
+  final _passFocus = FocusNode();
 
   @override
   void dispose() {
@@ -36,7 +38,18 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     _passController.dispose();
     _confirmPassController.dispose();
 
+    _nameFocus.dispose();
+    _phoneFocus.dispose();
+    _passFocus.dispose();
+
     super.dispose();
+  }
+
+// вспомогательный метод, будет менять фокус с одного поля на другое поле
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -52,6 +65,11 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
           padding: const EdgeInsets.all(16.0),
           children: [
             TextFormField(
+              focusNode: _nameFocus,
+              autofocus: true,
+              onFieldSubmitted: (_) {
+                _fieldFocusChange(context, _nameFocus, _phoneFocus);
+              },
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: 'Full Name *',
@@ -76,6 +94,10 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             ),
             SizedBox(height: 10),
             TextFormField(
+              focusNode: _phoneFocus,
+              onFieldSubmitted: (_) {
+                _fieldFocusChange(context, _phoneFocus, _passFocus);
+              },
               controller: _phoneController,
               decoration: InputDecoration(
                 labelText: 'Phone Number *',
@@ -154,6 +176,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             ),
             SizedBox(height: 10),
             TextFormField(
+              focusNode: _passFocus,
               controller: _passController,
               decoration: InputDecoration(
                 labelText: 'Password',
