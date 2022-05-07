@@ -1,13 +1,14 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../model/user.dart';
+import 'user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
   const RegisterFormPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterFormPage> createState() => _RegisterFormPageState();
+  // _RegisterFormPageState createState() => _RegisterFormPageState();
 }
 
 class _RegisterFormPageState extends State<RegisterFormPage> {
@@ -29,6 +30,8 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _nameFocus = FocusNode();
   final _phoneFocus = FocusNode();
   final _passFocus = FocusNode();
+
+  User newUser = User();
 
   @override
   void dispose() {
@@ -76,19 +79,19 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               decoration: InputDecoration(
                 labelText: 'Full Name *',
                 hintText: 'What do people call you?',
-                prefixIcon: Icon(Icons.person),
+                prefixIcon: const Icon(Icons.person),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       _nameController.clear();
                     },
-                    child: Icon(Icons.delete, color: Colors.red)),
-                enabledBorder: OutlineInputBorder(
+                    child: const Icon(Icons.delete, color: Colors.red)),
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
                   borderSide: BorderSide(color: Colors.black, width: 2.0),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
@@ -97,8 +100,9 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               ),
               // validator: (val) => val!.isEmpty ? 'Name is required' : null,
               validator: _validateName,
+              onSaved: (value) => newUser.name = value!,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               focusNode: _phoneFocus,
               onFieldSubmitted: (_) {
@@ -108,20 +112,20 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               decoration: InputDecoration(
                 labelText: 'Phone Number *',
                 hintText: 'Where can we rech you?',
-                prefixIcon: Icon(Icons.phone),
+                prefixIcon: const Icon(Icons.phone),
                 suffixIcon: GestureDetector(
                     onLongPress: () {
                       _phoneController.clear();
                     },
-                    child: Icon(Icons.delete, color: Colors.red)),
+                    child: const Icon(Icons.delete, color: Colors.red)),
                 helperText: 'Phone format: (XXX)XXX-XXXX',
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
                   borderSide: BorderSide(color: Colors.black, width: 2.0),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
@@ -137,19 +141,21 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               validator: (value) => _validatePhoneNumber(value!)
                   ? null
                   : 'Phone number must be entered as (###)###-####',
+              onSaved: (value) => newUser.phone = value!,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email Address',
                 hintText: 'Enter a email address',
                 icon: Icon(Icons.email),
               ),
               keyboardType: TextInputType.emailAddress,
-              validator: _validateEmail,
+              // validator: _validateEmail,
+              onSaved: (value) => newUser.email = value ?? '',
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             DropdownButtonFormField(
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -165,6 +171,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                 debugPrint(country.toString());
                 setState(() {
                   _selectedCountry = country as String;
+                  newUser.country = country;
                 });
               },
               value: _selectedCountry,
@@ -172,10 +179,10 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               //   return val == null ? 'Please select a country' : null;
               // },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _liveStoryController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Live Story',
                 hintText: 'Tell us about your self',
                 helperText: 'Keep it short, this is just a demo',
@@ -183,8 +190,9 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
               ),
               maxLines: 3,
               inputFormatters: [LengthLimitingTextInputFormatter(100)],
+              onSaved: (value) => newUser.story = value!,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               focusNode: _passFocus,
               controller: _passController,
@@ -200,13 +208,13 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   icon:
                       Icon(_hidePass ? Icons.visibility : Icons.visibility_off),
                 ),
-                icon: Icon(Icons.security),
+                icon: const Icon(Icons.security),
               ),
               obscureText: _hidePass,
               maxLength: 8,
               validator: _validatePassword,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               controller: _confirmPassController,
               decoration: InputDecoration(
@@ -221,16 +229,16 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   icon:
                       Icon(_hidePass ? Icons.visibility : Icons.visibility_off),
                 ),
-                icon: Icon(Icons.border_color),
+                icon: const Icon(Icons.border_color),
               ),
               obscureText: _hidePass,
               maxLength: 8,
               validator: _validatePassword,
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ElevatedButton(
               onPressed: _submitForm,
-              child: Text(
+              child: const Text(
                 'Submit Form',
                 style: TextStyle(color: Colors.white),
               ),
@@ -246,8 +254,13 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      //"currentState?.save()" проверяет наличие "onSaved" у каждого поля
+      // и записывает инфу в "модель" newUser
       _formKey.currentState?.save();
+
+      //через Navigator.push будем отправлять newUser на второй экран
       _showDialog(name: _nameController.text);
+
       debugPrint('name: ${_nameController.text}');
       debugPrint('phone: ${_phoneController.text}');
       debugPrint('email: ${_emailController.text}');
@@ -275,6 +288,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
     return _phoneExp.hasMatch(input);
   }
 
+/*
   String? _validateEmail(String? value) {
     if (value!.isEmpty) {
       return 'Email cannot be empty';
@@ -284,7 +298,7 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
       return null;
     }
   }
-
+*/
   String? _validatePassword(String? value) {
     if (_passController.text.length != 8) {
       return '8 character required for password';
@@ -334,6 +348,16 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+//создали в UserInfoPage конструктор, вызываем userInfo и передаём ему newUser
+                    builder: (context) => UserInfoPage(
+                      context,
+                      userInfo: newUser,
+                    ),
+                  ),
+                );
               },
               child: const Text(
                 'Verified',
