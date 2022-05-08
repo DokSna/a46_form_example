@@ -3,5 +3,5 @@ class User {
   late String phone;
   String email = '';
   String? country;
-  late String story;
+  String story = '';
 }
