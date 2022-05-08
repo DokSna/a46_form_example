@@ -44,13 +44,15 @@ class UserInfoPage extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                userInfo.email.isEmpty ? 'Not specified' : userInfo.email,
+                userInfo.email,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
-              leading: const Icon(
-                Icons.mail,
-                color: Colors.black,
-              ),
+              leading: userInfo.email == ''
+                  ? null
+                  : const Icon(
+                      Icons.mail,
+                      color: Colors.black,
+                    ),
             ),
           ],
         ),
