@@ -30,7 +30,7 @@ class UserInfoPage extends StatelessWidget {
                 Icons.person,
                 color: Colors.black,
               ),
-              trailing: Text(userInfo.country),
+              trailing: Text(userInfo.country ?? ''),
             ),
             ListTile(
               title: Text(

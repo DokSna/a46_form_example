@@ -24,7 +24,12 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
   final _passController = TextEditingController();
   final _confirmPassController = TextEditingController();
 
-  final List<String> _countries = ['Russia', 'Ukraine', 'Germany', 'France'];
+  final List<String?> _countries = [
+    'Russia',
+    'Ukraine',
+    'Germany',
+    'France',
+  ];
   String? _selectedCountry;
 
   final _nameFocus = FocusNode();
@@ -163,14 +168,14 @@ class _RegisterFormPageState extends State<RegisterFormPage> {
                   labelText: 'Country?'),
               items: _countries.map((country) {
                 return DropdownMenuItem(
-                  child: Text(country),
+                  child: Text(country ??= ''),
                   value: country,
                 );
               }).toList(),
               onChanged: (country) {
                 debugPrint(country.toString());
                 setState(() {
-                  _selectedCountry = country as String;
+                  _selectedCountry = country as String?;
                   newUser.country = country;
                 });
               },
